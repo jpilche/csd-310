@@ -1,17 +1,15 @@
-try:
-    db = mysql.connector.connect(**config)
-    print("*\n Database user {} connected to MySQL on host {} with database {}".format(config["root"], config ["127.0.0.1"], config ["pysports"]))
-    input ("\n\n Press any key to contine...")
+import mysql.connector #connection code
+from mysql.connector import errorcode
 
-except: mysql.connector.Error as err:
-    if err.errno == errorcode.ER_ACCESS_DENIED_ERROR:
-        print(" The supplied username or password are invalid ")
+conn = mysql.connector.connect(
+    host="localhost",
+    database="pysports",
+    user="root",
+    password="admin" 
+)
 
-    else if err.errno == errorcode.ER_BAD_DB_ERROR:
-        print(" The specified database does not exist")
+cursor = conn.cursor()
+cursor.execute("select * from team")
 
-    else
-        print(err)
-
-finally:
-    db.close()
+for row in cursor:
+    print(row)
